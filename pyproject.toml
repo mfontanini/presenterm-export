@@ -1,9 +1,9 @@
 [project]
 name = "presenterm-export"
-version = "0.1.1"
+version = "0.1.2"
 description = "Presenterm's presentation exporter"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license = {file = "LICENSE.txt"}
 keywords = ["presenterm", "terminal", "slideshow"]
 authors = [
@@ -22,9 +22,9 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/mfontanini/presenterm-exporter"
-"Bug Reports" = "https://github.com/mfontanini/presenterm-exporter"
-"Source" = "https://github.com/mfontanini/presenterm-exporter"
+"Homepage" = "https://github.com/mfontanini/presenterm-export"
+"Bug Reports" = "https://github.com/mfontanini/presenterm-export"
+"Source" = "https://github.com/mfontanini/presenterm-export"
 
 [project.scripts]
 presenterm-export = "presenterm_export.cli:main"
