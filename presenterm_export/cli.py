@@ -1,5 +1,6 @@
 import json
 import sys
+import os
 from argparse import ArgumentParser
 from tempfile import TemporaryDirectory
 from dataclasses import dataclass
@@ -32,7 +33,7 @@ def run(args, metadata: PresentationMetadata):
     print(f"Writing temporary files into {output_directory.name}")
 
     input_path = PresentationPath(metadata.presentation_path)
-    preprocessed_presentation_path = input_path.replace_extension("pre.md")
+    preprocessed_presentation_path = os.path.join(output_directory.name, "prepared.md")
     final_pdf_path = input_path.replace_extension("pdf")
     options = PdfOptions(output_path=final_pdf_path, font_size=10, line_height=12)
     char_width = int(options.font_size * FONT_SIZE_WIDTH)
@@ -43,8 +44,7 @@ def run(args, metadata: PresentationMetadata):
     processor = ImageProcessor(output_directory.name, char_width)
 
     presentation = processor.prepare_images(presentation, metadata.images)
-    with open(preprocessed_presentation_path, "w") as fd:
-        fd.write(presentation)
+    persist(presentation, preprocessed_presentation_path)
 
     print("Running presentation to capture slide...")
     presentation = capture_slides(
