@@ -1,0 +1,34 @@
+[project]
+name = "presenterm-export"
+version = "0.1.0"
+description = "Presenterm's presentation exporter"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE.txt"}
+keywords = ["presenterm", "terminal", "slideshow"]
+authors = [
+  {name = "Matias Fontanini", email = "matias.fontanini@gmail.com" }
+]
+maintainers = [
+  {name = "Matias Fontanini", email = "matias.fontanini@gmail.com" }
+]
+
+dependencies = [
+  "ansi2html==1.8.0",
+  "libtmux==0.23.2",
+  "Pillow==10.1.0",
+  "weasyprint==60.1.0",
+  "dataclass-wizard==0.22.2"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/mfontanini/presenterm-exporter"
+"Bug Reports" = "https://github.com/mfontanini/presenterm-exporter"
+"Source" = "https://github.com/mfontanini/presenterm-exporter"
+
+[project.scripts]
+presenterm-export = "presenterm_export.cli:main"
+
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
