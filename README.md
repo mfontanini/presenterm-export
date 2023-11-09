@@ -4,11 +4,12 @@ A PDF exporter for [presenterm](https://github.com/mfontanini/presenterm).
 
 ---
 
-**This is not meant to be used as a standalone but instead by running _presenterm_ using the `--export-pdf` switch.**
+**This is not meant to be used as a standalone tool but instead by running _presenterm_ using the `--export-pdf` 
+switch.**
 
 # Installation
 
-This tool requires [tmux](https://github.com/tmux/tmux/) to be installed. The simply run:
+This tool requires [tmux](https://github.com/tmux/tmux/) to be installed. Then simply run:
 
 ```shell
 pip install presenterm-export
