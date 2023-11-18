@@ -34,7 +34,7 @@ def capture_slides(
         kill_session=True,
         x=size.columns,
         y=size.lines,
-        window_command=f"{presenterm_path} {presentation_path}",
+        window_command=f"{presenterm_path} --export {presentation_path}",
     )
     try:
         return _capture(session, commands)
