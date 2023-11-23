@@ -44,7 +44,7 @@ class ImageProcessor:
                 f"Assigning color {color} to image {image.content_path}, replacing with {new_path}"
             )
 
-            offset = line_lengths[image.line] + image.column - 1
+            offset = line_lengths[image.line - 1] + image.column - 1
             contents = ImageProcessor._replace_image(
                 contents, image.content_path, new_path, offset
             )
