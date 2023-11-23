@@ -1,5 +1,5 @@
 from math import ceil
-from typing import List
+from typing import List, Optional
 from dataclasses import dataclass
 from PIL import Image
 
@@ -35,6 +35,7 @@ class ImageProcessor:
         images = sorted(
             images, key=lambda image: (image.line, image.column), reverse=True
         )
+        front_matter_end = ImageProcessor._find_front_matter_end(contents)
         line_lengths = ImageProcessor._build_cumulative_line_lengths(contents)
         for image in images:
             color = self._build_next_color()
@@ -44,7 +45,7 @@ class ImageProcessor:
                 f"Assigning color {color} to image {image.content_path}, replacing with {new_path}"
             )
 
-            offset = line_lengths[image.line - 1] + image.column - 1
+            offset = line_lengths[image.line - 1] + image.column + front_matter_end - 1
             contents = ImageProcessor._replace_image(
                 contents, image.content_path, new_path, offset
             )
@@ -63,6 +64,17 @@ class ImageProcessor:
                 contents, color, image_path, background_color
             )
         return contents
+
+    @staticmethod
+    def _find_front_matter_end(contents: str) -> int:
+        start_index = contents.index("---")
+        if start_index != 0:
+            return 0
+        front_matter_end = contents.find("---", start_index + 3)
+        if front_matter_end != -1:
+            return front_matter_end + 3
+        else:
+            return 0
 
     @staticmethod
     def _build_cumulative_line_lengths(contents: str) -> List[int]:
