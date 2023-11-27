@@ -33,7 +33,7 @@ def run(args, metadata: PresentationMetadata):
     print(f"Writing temporary files into {output_directory.name}")
 
     input_path = PresentationPath(metadata.presentation_path)
-    preprocessed_presentation_path = os.path.join(output_directory.name, "prepared.md")
+    preprocessed_presentation_path = input_path.replace_extension("prepared.md")
     final_pdf_path = input_path.replace_extension("pdf")
     options = PdfOptions(output_path=final_pdf_path, font_size=10, line_height=12)
     char_width = int(options.font_size * FONT_SIZE_WIDTH)
@@ -50,6 +50,7 @@ def run(args, metadata: PresentationMetadata):
     presentation = capture_slides(
         args.presenterm_path, preprocessed_presentation_path, metadata.commands
     )
+    os.remove(preprocessed_presentation_path)
     if not presentation.slides:
         raise Exception("could not capture any slides")
 
