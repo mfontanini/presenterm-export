@@ -1,9 +1,9 @@
 [project]
 name = "presenterm-export"
-version = "0.1.5"
+version = "0.1.6"
 description = "Presenterm's presentation exporter"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 license = {file = "LICENSE.txt"}
 keywords = ["presenterm", "terminal", "slideshow"]
 authors = [
