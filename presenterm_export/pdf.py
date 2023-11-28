@@ -43,6 +43,7 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
             display: inline-block;
             line-height: {line_height}px; 
             margin: 0px;
+            width: {width}px;
         }}
 
         @page {{
