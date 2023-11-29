@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import weasyprint
 
+from presenterm_export.html import FONT_SIZE_WIDTH
 from presenterm_export.html import find_background_color
 from presenterm_export.capture import PresentationSize
 
@@ -22,7 +23,7 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
     font_size = options.font_size
     line_height = options.line_height
     height = dimensions.rows * line_height
-    width = dimensions.columns * font_size * 0.605
+    width = dimensions.columns * font_size * FONT_SIZE_WIDTH
     styles = f"""
         pre {{
             margin: 0;

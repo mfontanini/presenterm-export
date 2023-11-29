@@ -53,24 +53,27 @@ def _capture(
     if pane is None:
         raise Exception("no attached pane")
     sleep(1)
+    width = int(session.window_width)
+    height = int(session.window_height)
     for command in commands:
         command_type = command["type"]
         if command_type == "capture":
-            captured_text = pane.cmd("capture-pane", "-e", "-J", "-p").stdout
-            slide = "\n".join(captured_text) + "\n"
+            captured_lines = pane.cmd("capture-pane", "-e", "-J", "-p").stdout
+            if len(captured_lines) != height:
+                # tmux 3.3a lies about the session height so we add an extra one
+                captured_lines.append("")
+            slide = "\n".join(captured_lines) + "\n"
             slides.append(slide)
             print(f"Captured {len(slides)} slides so far...")
         elif command_type == "wait_for_change":
             sleep(0.5)
         elif command_type:
             pane.send_keys(command["keys"])
-    width = session.window_width
-    height = session.window_height
     if width is None or height is None:
         raise Exception("no width/height")
     size = PresentationSize(
-        columns=int(width),
-        rows=int(height),
+        columns=width,
+        rows=height,
     )
     print(f"Captured {len(slides)} slides")
     return Presentation(slides, size)
