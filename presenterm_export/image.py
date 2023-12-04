@@ -67,7 +67,7 @@ class ImageProcessor:
 
     @staticmethod
     def _find_front_matter_end(contents: str) -> int:
-        start_index = contents.index("---")
+        start_index = contents.find("---")
         if start_index != 0:
             return 0
         front_matter_end = contents.find("---", start_index + 3)
