@@ -16,7 +16,6 @@ maintainers = [
 dependencies = [
   "ansi2html==1.8.0",
   "libtmux==0.23.2",
-  "Pillow==10.1.0",
   "weasyprint==60.1.0",
   "dataclass-wizard==0.22.2"
 ]
