@@ -1,6 +1,5 @@
 import json
 import sys
-import os
 from argparse import ArgumentParser
 from tempfile import TemporaryDirectory
 from dataclasses import dataclass
@@ -33,7 +32,6 @@ def run(args, metadata: PresentationMetadata):
     print(f"Writing temporary files into {output_directory.name}")
 
     input_path = PresentationPath(metadata.presentation_path)
-    preprocessed_presentation_path = input_path.replace_extension("prepared.md")
     final_pdf_path = input_path.replace_extension("pdf")
     options = PdfOptions(output_path=final_pdf_path, font_size=10, line_height=12)
     char_width = int(options.font_size * FONT_SIZE_WIDTH)
@@ -43,14 +41,10 @@ def run(args, metadata: PresentationMetadata):
 
     processor = ImageProcessor(output_directory.name, char_width)
 
-    presentation = processor.prepare_images(presentation, metadata.images)
-    persist(presentation, preprocessed_presentation_path)
-
     print("Running presentation to capture slide...")
     presentation = capture_slides(
-        args.presenterm_path, preprocessed_presentation_path, metadata.commands
+        args.presenterm_path, metadata.presentation_path, metadata.commands
     )
-    os.remove(preprocessed_presentation_path)
     if not presentation.slides:
         raise Exception("could not capture any slides")
 
@@ -60,7 +54,9 @@ def run(args, metadata: PresentationMetadata):
         persist(presentation_html, input_path.replace_extension("pre.html"))
 
     print("Replacing images...")
-    presentation_html = processor.replace_final_images(presentation_html)
+    presentation_html = processor.replace_final_images(
+        presentation_html, metadata.images
+    )
     if args.emit_intermediate:
         persist(presentation_html, input_path.replace_extension("final.html"))
 
