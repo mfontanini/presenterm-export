@@ -1,5 +1,6 @@
 import json
 import sys
+from importlib.metadata import version
 from argparse import ArgumentParser
 from tempfile import TemporaryDirectory
 from dataclasses import dataclass
@@ -96,6 +97,15 @@ def main():
         action="store_true",
         default=False,
     )
+    parser.add_argument(
+        "--version",
+        help="print the version",
+        action="store_true",
+        default=False,
+    )
     args = parser.parse_args()
+    if args.version:
+        print(version("presenterm-export"))
+        exit(0)
     metadata = load_metadata()
     run(args, metadata)
