@@ -1,7 +1,7 @@
 import json
 import sys
 from importlib.metadata import version
-from argparse import ArgumentParser
+from argparse import REMAINDER, ArgumentParser
 from tempfile import TemporaryDirectory
 from dataclasses import dataclass
 from typing import List, Dict
@@ -44,7 +44,7 @@ def run(args, metadata: PresentationMetadata):
 
     print("Running presentation to capture slide...")
     presentation = capture_slides(
-        args.presenterm_path, metadata.presentation_path, metadata.commands
+        args.rest, metadata.presentation_path, metadata.commands
     )
     if not presentation.slides:
         raise Exception("could not capture any slides")
@@ -87,11 +87,6 @@ def main():
         description="converts presenterm presentations into PDF files",
     )
     parser.add_argument(
-        "--presenterm-path",
-        help="the path to the presenterm binary",
-        default="presenterm",
-    )
-    parser.add_argument(
         "--emit-intermediate",
         help="whether to emmit intermediate files for testing",
         action="store_true",
@@ -103,6 +98,11 @@ def main():
         action="store_true",
         default=False,
     )
+    parser.add_argument(
+        "rest",
+        nargs=REMAINDER,
+    )
+
     args = parser.parse_args()
     if args.version:
         print(version("presenterm-export"))
