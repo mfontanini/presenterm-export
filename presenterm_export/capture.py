@@ -18,7 +18,7 @@ class Presentation:
 
 
 def capture_slides(
-    presenterm_path: str, presentation_path: str, commands: List[Dict[str, str]]
+    args: List[str], presentation_path: str, commands: List[Dict[str, str]]
 ):
     """
     Capture the slides for a presentation.
@@ -28,13 +28,14 @@ def capture_slides(
     """
     size = os.get_terminal_size()
     tmux_server = libtmux.Server()
+    command = " ".join([f"'{arg}'" for arg in args])
     session = tmux_server.new_session(
         session_name="presenterm-capturer",
         attach=False,
         kill_session=True,
         x=size.columns,
         y=size.lines,
-        window_command=f"{presenterm_path} --export {presentation_path}",
+        window_command=command,
     )
     try:
         return _capture(session, commands)
