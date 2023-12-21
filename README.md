@@ -15,6 +15,11 @@ This tool requires [tmux](https://github.com/tmux/tmux/) to be installed. Then s
 pip install presenterm-export
 ```
 
+ **Note**: make sure that `presenterm-export` works by running `presenterm-export --version` before attempting to 
+> generate a PDF file. If you get errors related to _weasyprint_, follow their [installation 
+> instructions](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html) to ensure you meet all of their 
+> dependencies. This has otherwise caused issues in macOS.
+
 # How it works
 
 This tool's goal is to capture the output of _presenterm_ and turn it into a PDF file. This section outlines roughly how 
