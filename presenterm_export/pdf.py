@@ -36,6 +36,7 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
         body {{
             margin: 0;
             font-size: {font_size}px;
+            line-height: {line_height}px;
             background-color: {background_color};
             width: {width}px;
         }}
