@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 from dataclasses import dataclass
 from typing import List, Dict
 from dataclass_wizard import JSONWizard
+import libtmux
 
 from presenterm_export.capture import capture_slides
 from presenterm_export.html import FONT_SIZE_WIDTH, slides_to_html
@@ -29,6 +30,8 @@ class PresentationPath:
 
 
 def run(args, metadata: PresentationMetadata):
+    print(f"tmux version: {libtmux.common.get_version()}")
+
     output_directory = TemporaryDirectory()
     print(f"Writing temporary files into {output_directory.name}")
 
