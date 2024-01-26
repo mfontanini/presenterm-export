@@ -29,6 +29,7 @@ def capture_slides(
     size = os.get_terminal_size()
     tmux_server = libtmux.Server()
     command = " ".join([f"'{arg}'" for arg in args])
+    print(f"Running {command}")
     session = tmux_server.new_session(
         session_name="presenterm-capturer",
         attach=False,
