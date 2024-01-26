@@ -1,3 +1,4 @@
+import platform
 from dataclasses import dataclass
 import weasyprint
 
@@ -24,6 +25,10 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
     line_height = options.line_height
     height = dimensions.rows * line_height
     width = dimensions.columns * font_size * FONT_SIZE_WIDTH
+    body_line_height = f"line-height: {line_height}px;"
+    # The line above fixes an issue in fedora but causes the issue in macOS...
+    if platform.system() == "Darwin":
+        body_line_height = ""
     styles = f"""
         pre {{
             margin: 0;
@@ -36,7 +41,7 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
         body {{
             margin: 0;
             font-size: {font_size}px;
-            line-height: {line_height}px;
+            {body_line_height}
             background-color: {background_color};
             width: {width}px;
         }}
