@@ -46,9 +46,7 @@ def run(args, metadata: PresentationMetadata):
     processor = ImageProcessor(output_directory.name, char_width)
 
     print("Running presentation to capture slide...")
-    presentation = capture_slides(
-        args.rest, metadata.presentation_path, metadata.commands
-    )
+    presentation = capture_slides(args.rest, metadata.commands)
     if not presentation.slides:
         raise Exception("could not capture any slides")
 
