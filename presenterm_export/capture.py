@@ -2,6 +2,7 @@ import os
 from dataclasses import dataclass
 from typing import Dict, List
 from time import sleep
+from tempfile import NamedTemporaryFile
 import libtmux
 
 
@@ -24,9 +25,10 @@ def capture_slides(args: List[str], commands: List[Dict[str, str]]):
     This uses tmux to run presenterm and capture every slide by following the given
     list of commands.
     """
+    stderr_file = NamedTemporaryFile()
     size = os.get_terminal_size()
     tmux_server = libtmux.Server()
-    command = " ".join([f"'{arg}'" for arg in args])
+    command = " ".join([f"'{arg}'" for arg in args]) + f" 2> {stderr_file.name}"
     print(f"Running {command}")
     session = tmux_server.new_session(
         session_name="presenterm-capturer",
@@ -37,14 +39,18 @@ def capture_slides(args: List[str], commands: List[Dict[str, str]]):
         window_command=command,
     )
     try:
-        return _capture(session, commands)
+        return _capture(session, commands, stderr_file)
     finally:
-        session.kill_session()
+        try:
+            session.kill_session()
+        except:
+            pass
 
 
 def _capture(
     session: libtmux.session.Session,
     commands: List[Dict[str, str]],
+    stderr_file: NamedTemporaryFile,
 ) -> Presentation:
     if session is None:
         raise Exception("session not started")
@@ -76,4 +82,7 @@ def _capture(
         rows=height,
     )
     print(f"Captured {len(slides)} slides")
+    stderr = stderr_file.read()
+    if stderr:
+        raise Exception(stderr.decode("utf8"))
     return Presentation(slides, size)
