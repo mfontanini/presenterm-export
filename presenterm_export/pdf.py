@@ -32,6 +32,7 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
     styles = f"""
         pre {{
             margin: 0;
+            padding: 0;
         }}
 
         span {{
@@ -47,7 +48,6 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
         }}
 
         .content-line {{
-            display: inline-block;
             line-height: {line_height}px; 
             margin: 0px;
             width: {width}px;
@@ -61,5 +61,8 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
 """
     css = weasyprint.CSS(string=styles)
     html.write_pdf(
-        target=options.output_path, stylesheets=[css], presentational_hints=True
+        target=options.output_path,
+        stylesheets=[css],
+        presentational_hints=True,
+        uncompressed_pdf=True,
     )

@@ -18,7 +18,7 @@ class Presentation:
     size: PresentationSize
 
 
-def capture_slides(args: List[str], commands: List[Dict[str, str]]):
+def capture_slides(args: List[str], commands: List[Dict[str, str]]) -> Presentation:
     """
     Capture the slides for a presentation.
 
