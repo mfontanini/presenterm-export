@@ -11,7 +11,7 @@ really is but I found this by trial and error an I'm okay with that.
 FONT_SIZE_WIDTH = 0.605
 
 
-def slide_to_html(slide: str) -> str:
+def slide_to_html(slide: str, rows_per_slide: int) -> str:
     """
     Convert a slide using ansi escaped code into HTML.
 
@@ -22,40 +22,45 @@ def slide_to_html(slide: str) -> str:
     html = converter.convert(slide)
     html = html.replace('class="body_foreground body_background"', "")
     html = html.replace("font-size: normal;", "")
-    # Remove this as it wraps every line somehow
-    html = html.replace('<span id="line-0">', "")
-    # Replace last closing line span with a closing div
-    html = html.replace("</span>\n</pre>", "</div>\n</pre>")
-    # Replace all line spans with divs (keep the span because whitespace)
-    html = re.sub('<span id="line-[0-9]+">', '<div class="content-line"><span>', html)
+    rows = re.findall(r'<span id="line-[\d]+">(.*)</span>', html)
 
-    # Find all line divs and replace their closing tag to be a /div rather than /span
-    needle = '<div class="content-line">'
-    index = html.find(needle, html.find(needle) + 1)
-    while index != -1:
-        html = html[:index] + "</div>" + html[index:]
-        index = html.find(needle, index + len("</div>") + 1)
-    # Replace this as it shows up at the end and adds a fake line
-    return html.replace('<div class="content-line"><span></span></div>', "")
+    # For some reason there's an extra line
+    rows = rows[:-1]
+
+    if len(rows) > rows_per_slide:
+        print(
+            f"Number of rows ({len(rows)}) is larger than expected ({rows_per_slide})"
+        )
+
+    # Some slides (e.g. intro slide) can cut short so make sure we have enough
+    missing_rows = rows_per_slide - len(rows)
+    rows.extend([""] * missing_rows)
+
+    output = ""
+    for row in rows:
+        if len(row) == 0:
+            row = " "
+        output += f'    <div class="content-line"><pre>{row}</pre></div>\n'
+    return output
 
 
-def slides_to_html(slides: List[str]) -> str:
+def slides_to_html(slides: List[str], rows_per_slide: int) -> str:
     """
     Take a list of slides and convert them into a single chunk of HTML.
     """
-    html_slides = [slide_to_html(slide) for slide in slides]
-    output = "".join(html_slides)
-    # Strip all the closing tags in between <pre>s as this closes body/html multiple
-    # times otherwise
-    close_needle = "</pre>"
-    pre_close_index = output.find(close_needle)
-    while pre_close_index != -1:
-        next_index = output.find("<pre", pre_close_index)
-        if next_index == -1:
-            break
-        output = output[: pre_close_index + len(close_needle)] + output[next_index:]
-        pre_close_index = output.find(close_needle, pre_close_index + 1)
-    return output
+
+    html_slides = [slide_to_html(slide, rows_per_slide) for slide in slides]
+    body = ""
+    for index, html_slide in enumerate(html_slides):
+        body += f"<!-- slide-{index} -->\n\n"
+        body += html_slide
+    return f"""<html>
+<head>
+</head>
+<body style="color: white">
+{body}
+</body>
+</html>"""
 
 
 def find_background_color(html: str) -> str:

@@ -51,7 +51,7 @@ def run(args, metadata: PresentationMetadata):
         raise Exception("could not capture any slides")
 
     print("Converting slides to HTML...")
-    presentation_html = slides_to_html(presentation.slides)
+    presentation_html = slides_to_html(presentation.slides, presentation.size.rows)
     if args.emit_intermediate:
         persist(presentation_html, input_path.replace_extension("pre.html"))
 
