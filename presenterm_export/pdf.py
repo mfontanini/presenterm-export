@@ -64,5 +64,4 @@ def generate_pdf(input_html: str, dimensions: PresentationSize, options: PdfOpti
         target=options.output_path,
         stylesheets=[css],
         presentational_hints=True,
-        uncompressed_pdf=True,
     )
