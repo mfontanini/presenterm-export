@@ -17,7 +17,7 @@ dependencies = [
   "ansi2html==1.8.0",
   "libtmux==0.23.2",
   "weasyprint==62.3.0",
-  "dataclass-wizard==0.22.2"
+  "dataclass-wizard==0.35.0"
 ]
 
 [project.urls]
