@@ -2,6 +2,10 @@
 
 A PDF exporter for [presenterm](https://github.com/mfontanini/presenterm).
 
+> [!note]
+>
+> This project is no longer needed as of [presenterm 0.12.0](https://github.com/mfontanini/presenterm/releases/tag/v0.12.0) and is therefore archived.
+
 ---
 
 **This is not meant to be used as a standalone tool but instead by running _presenterm_ using the `--export-pdf` 
